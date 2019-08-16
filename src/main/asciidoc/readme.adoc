@@ -2,7 +2,7 @@
 Dieter Bogdoll, <dibog@github.com>
 {project.version}, 2019/08/16
 :icons: font
-:basedir: {docdir}/../../../
+:basedir: {docdir}/../../..
 :snippets: {basedir}/target/generated-cmd-snippets
 :toc:
 
