@@ -17,7 +17,7 @@ class TestParentCmdDoku : CliKtDocSupport {
     }
 
     @Test
-    fun testParent() = document(listOf(), "parent")
+    fun testParent() = document(listOf(), "parent", true)
 
     @Test
     fun testFirstChild() = document(listOf("first-child"), "first-child")
@@ -25,7 +25,7 @@ class TestParentCmdDoku : CliKtDocSupport {
     @Test
     fun testSecondChild() = document(listOf("second-child","--req","required"), "second-child")
 
-    fun document(cmdArgs: List<String>, fragmentName: String, action: ()->Unit = {}) {
-        document(cmd, baseArgs, cmdArgs, fragmentName, action)
+    fun document(cmdArgs: List<String>, fragmentName: String, skipExec:  Boolean =false, action: ()->Unit = {}) {
+        document(cmd, baseArgs, cmdArgs, fragmentName, skipExec, action)
     }
 }

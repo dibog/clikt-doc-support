@@ -28,7 +28,7 @@ class TestDemoCmdDoku : CliKtDocSupport {
     }
     // end::demo-command[]
 
-    fun document(cmdArgs: List<String>, fragmentName: String, action: ()->Unit = {}) {
-        document(cmd, baseArgs, cmdArgs, fragmentName, action)
+    fun document(cmdArgs: List<String>, fragmentName: String, skipExec: Boolean = false, action: ()->Unit = {}) {
+        document(cmd, baseArgs, cmdArgs, fragmentName, skipExec, action)
     }
 }

@@ -1,7 +1,6 @@
 package io.github.dibog.cliktdoc
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.NoRunCliktCommand
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import org.junit.jupiter.api.fail
 import java.io.BufferedWriter
@@ -11,16 +10,18 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 interface CliKtDocSupport {
+
     fun document(
             cmd: CliktCommand,
             baseArgs: List<String>,
             cmdArgs: List<String>,
             fragmentName: String,
+            skipExec : Boolean = false,
             action: ()->Unit)
     {
         action()
         documentHelp(cmd, baseArgs, cmdArgs, fragmentName)
-        documentOutput(cmd, baseArgs, cmdArgs, fragmentName)
+        documentOutput(cmd, baseArgs, cmdArgs, fragmentName, skipExec)
     }
 
     private fun documentHelp(cmd: CliktCommand, baseArgs: List<String>, cmdArgs: List<String>, fragmentName: String) {
@@ -39,14 +40,14 @@ interface CliKtDocSupport {
         }
     }
 
-    private fun documentOutput(cmd: CliktCommand, baseArgs: List<String>, cmdArgs: List<String>, fragmentName: String) {
+    private fun documentOutput(cmd: CliktCommand, baseArgs: List<String>, cmdArgs: List<String>, fragmentName: String, skipExec: Boolean) {
         val args = (baseArgs+cmdArgs).joinToString(" ", transform = ::quote)
 
         writer("cmd", fragmentName).use {
             it.writeLn("${cmd.commandName} $args")
         }
 
-        try {
+        if(!skipExec) {
             val output = captureStdOut { cmd.parse(baseArgs + cmdArgs) }
             writer("output", fragmentName).use {
 
@@ -54,11 +55,6 @@ interface CliKtDocSupport {
                 it.writeLn("----")
                 it.writeLn(output)
                 it.writeLn("----")
-            }
-        }
-        catch(e: PrintHelpMessage) {
-            if(e.command !is NoRunCliktCommand) {
-                fail(e.message, e)
             }
         }
     }
