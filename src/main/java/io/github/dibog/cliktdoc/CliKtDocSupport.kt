@@ -66,10 +66,10 @@ interface CliKtDocSupport {
     }
 
     private fun writer(usage: String, fragmentName: String): BufferedWriter {
-        val snippetDir = Paths.get("target/generated-cmd-snippets").also { path ->
+        val snippetDir = Paths.get("target/generated-cmd-snippets/$fragmentName").also { path ->
             Files.createDirectories(path)
         }
-        return Files.newBufferedWriter(snippetDir.resolve("$usage-$fragmentName.adoc"))
+        return Files.newBufferedWriter(snippetDir.resolve("$usage.adoc"))
     }
 
     private fun BufferedWriter.writeLn(text: String) {
